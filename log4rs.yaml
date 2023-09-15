@@ -1,0 +1,27 @@
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} | {({l}):5.5} | {f}:{L} — {m}{n}"
+
+  logger:
+    kind: file
+    path: "log/logger.log"
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} | {({l}):5.5} | {f}:{L} — {m}{n}"
+
+root:
+  level: trace
+  appenders:
+    - stdout
+
+loggers:
+  logger:
+    level: info
+    appenders:
+      - stdout
+      - logger
+  stdout:
+    level: info
+    appenders:
+      - stdout
