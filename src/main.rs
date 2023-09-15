@@ -1,10 +1,17 @@
 mod config;
 mod server;
 mod utils;
+mod core;
 use log::info;
 
 fn main() {
     log4rs::init_file("log4rs.yaml", Default::default()).unwrap();
+    core::tcp::socket_tcp();
+
+}
+
+#[allow(dead_code)]
+fn dead_code() {
     let result: bool = config::ip::is_valid_ip("10.0.0.1");
     info!("the result of is_valid_ip: {}", result);
     server::borrow::borrow_style();
