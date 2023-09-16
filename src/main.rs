@@ -3,13 +3,36 @@ mod server;
 mod utils;
 mod core;
 mod enums;
-use log::info;
+mod interface;
+use log::{info, error};
+
+use crate::interface::tcp::NetworkProtocol;
 
 fn main() {
-    log4rs::init_file("log4rs.yaml", Default::default()).unwrap();
+    log4rs::init_file("../log4rs.yaml", Default::default()).unwrap();
     core::tcp::socket_tcp();
     enums::enums::process_message();
 
+    let mut tcp_connection = interface::tcp::TcpProtocol::new();
+    let address = "127.0.0.1:8081";
+
+    match tcp_connection.connect(address) {
+        Ok(()) => {
+            info!("Dados enviados com sucesso");
+            let mut buffer_r = [0; 1024];
+            match tcp_connection.receive(&mut buffer_r) {
+                Ok(bytes_received) => {
+                    info!("dados recebidos, {}", bytes_received);
+                }
+                Err(err) => {
+                    info!("Erro ao enviar dados: {}", err);
+                }
+            }
+        }
+        Err(err) => {
+            error!("Erro na conexão, {}", err);
+        }
+    }
 }
 
 #[allow(dead_code)]
