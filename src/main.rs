@@ -2,11 +2,13 @@ mod config;
 mod server;
 mod utils;
 mod core;
+mod enums;
 use log::info;
 
 fn main() {
     log4rs::init_file("log4rs.yaml", Default::default()).unwrap();
     core::tcp::socket_tcp();
+    enums::enums::process_message();
 
 }
 
